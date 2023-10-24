@@ -19,9 +19,9 @@ export async function fetchLaftel(day: Weekday): Promise<TimetableItem[]> {
   const data: any[] = await res.json();
   const result: Record<string, TimetableItem[]> = {};
   for (const item of data) {
-    if (!result[item.distributed_air_time])
-      result[item.distributed_air_time] = [];
-    const table = result[item.distributed_air_time];
+    const itemWeek = item.distributed_air_time;
+    if (!result[itemWeek]) result[itemWeek] = [];
+    const table = result[itemWeek];
     table.push({
       title: item.name,
     });
