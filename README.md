@@ -1,4 +1,4 @@
-# zundabot
+# animebot
 
 To install dependencies:
 

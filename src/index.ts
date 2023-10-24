@@ -9,12 +9,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { AnimationTimetableProvider, Weekday } from "./BotActionsSchema";
-import {
-  TimetableItem,
-  fetchAnissia,
-  fetchDAnimeStore,
-  fetchLaftel,
-} from "./api";
+import { fetchAnissia, fetchDAnimeStore, fetchLaftel } from "./api";
 
 dotenv.config();
 
@@ -77,10 +72,18 @@ async function printAnimationTimetable(
   provider: AnimationTimetableProvider = "Laftel",
   ctx: Context
 ) {
-  let timetable: TimetableItem[] | null = null;
-  if (provider === "Laftel") timetable = await fetchLaftel(day);
-  if (provider === "Anissia") timetable = await fetchAnissia(day);
-  if (provider === "dAnime") timetable = await fetchDAnimeStore(day);
+  const timetable = await (async () => {
+    switch (provider) {
+      case "Laftel":
+        return await fetchLaftel(day);
+      case "Anissia":
+        return await fetchAnissia(day);
+      case "dAnime":
+        return await fetchDAnimeStore(day);
+      default:
+        return null;
+    }
+  })();
 
   ctx.reply(
     `${day} | ${provider}\n` + timetable?.map((x) => x.title).join("\n") ?? ""
