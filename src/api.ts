@@ -17,16 +17,9 @@ export async function fetchLaftel(day: Weekday): Promise<TimetableItem[]> {
   const url = "https://laftel.net/api/search/v2/daily/";
   const res = await fetch(url);
   const data: any[] = await res.json();
-  const result: Record<string, TimetableItem[]> = {};
-  for (const item of data) {
-    const itemWeek = item.distributed_air_time;
-    if (!result[itemWeek]) result[itemWeek] = [];
-    const table = result[itemWeek];
-    table.push({
-      title: item.name,
-    });
-  }
-  return result[DAY_MAP[day]];
+  return data
+    .filter((item) => item.distributed_air_time === DAY_MAP[day])
+    .map((x) => ({ title: x.name }));
 }
 
 export async function fetchDAnimeStore(day: Weekday): Promise<TimetableItem[]> {
@@ -36,18 +29,9 @@ export async function fetchDAnimeStore(day: Weekday): Promise<TimetableItem[]> {
   const {
     data: { workList: data },
   }: { data: { workList: any[] } } = await res.json();
-  const result: Record<string, TimetableItem[]> = {};
-
-  for (const item of data) {
-    const itemWeek = item.workInfo.workWeek;
-    if (!result[itemWeek]) result[itemWeek] = [];
-    const table = result[itemWeek];
-    table.push({
-      title: item.workInfo.workTitle,
-    });
-  }
-
-  return result[day.toLowerCase()];
+  return data
+    .filter((item) => item.workInfo.workWeek === day.toLocaleLowerCase())
+    .map((x) => ({ title: x.workInfo.workTitle }));
 }
 
 export async function fetchAnissia(day: Weekday): Promise<TimetableItem[]> {

@@ -37,6 +37,7 @@ bot.on("message", async (ctx) => {
     }
     const program = response.data;
     console.log(
+      "\n",
       getData(translator.validator.createModuleTextFromJson(program))
     );
 
@@ -52,7 +53,7 @@ async function handleCall(
   ctx: Context
 ): Promise<unknown> {
   console.log(func, args);
-  if (func === "deltaToDayKind") {
+  if (func === "deltaToWeekday") {
     return deltaToWeekday(args[0]);
   } else if (func === "printAnimationTimetable") {
     return printAnimationTimetable(args[0], args[1], ctx);

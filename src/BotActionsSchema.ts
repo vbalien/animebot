@@ -2,20 +2,20 @@
 
 export type Weekday = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
 
-// Anissia = 애니시아
 // Laftel = 라프텔
+// Anissia = 애니시아
 // dAnime = d아니메스토어
-export type AnimationTimetableProvider = "Anissia" | "Laftel" | "dAnime";
+export type AnimationTimetableProvider = "Laftel" | "Anissia" | "dAnime";
 
 export type API = {
   // Convert delta values based on today to Weekday
-  deltaToDayKind(delta: number): Weekday;
+  deltaToWeekday(delta: number): Weekday;
 
   // Print the anime schedule.
   printAnimationTimetable(
     // Which days of the week to get
     weekday: Weekday,
-    // Animation schedule provider (default: Laftel)
+    // Animation schedule provider
     provider?: AnimationTimetableProvider
   ): void;
 
